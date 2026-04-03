@@ -15,7 +15,6 @@ import java.util.List;
 public class TransacaoCsvReader {
 
     public List<Transacao> readCsv(String caminhoArquivo) throws IOException {
-        int contaLinhaLida=0;
         List<Transacao> transacoes = new ArrayList<>();
         InputStream is = getClass().getResourceAsStream(caminhoArquivo);
         if (is == null) {
@@ -27,9 +26,7 @@ public class TransacaoCsvReader {
             while ((linha = bufferedReader.readLine()) != null) {
                 Transacao transacao = parseLinha(linha);
                 transacoes.add(transacao);
-                contaLinhaLida++;
                 System.out.println(transacao); // linha de teste
-
             }
         }
         System.out.println("o total de linhas lidas foi: "+ contaLinhaLida );
