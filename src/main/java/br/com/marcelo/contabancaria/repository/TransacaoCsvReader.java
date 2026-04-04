@@ -29,8 +29,6 @@ public class TransacaoCsvReader {
                 System.out.println(transacao); // linha de teste
             }
         }
-        System.out.println("o total de linhas lidas foi: "+ contaLinhaLida );
-
         return transacoes;
     }
     private Transacao parseLinha(String linha) {

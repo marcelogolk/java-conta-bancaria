@@ -31,7 +31,7 @@ public class TransacaoService {
         return resultado;
     }
 
-    public Map<ContaId, List<Transacao>> agruparPorConta(List<Transacao> transacoes){
+    public Map<ContaId, List<Transacao>> agruparPorConta(List<Transacao> transacoes) {
         if (transacoes == null) {
             throw new IllegalArgumentException("A lista de transações não pode ser nula.");
         }
@@ -39,22 +39,32 @@ public class TransacaoService {
             return new HashMap<>();
         }
         Map<ContaId, List<Transacao>> map = new HashMap<>();
-        ContaId contaId = null;
         for (Transacao transacao : transacoes) {
-            contaId = new ContaId(transacao.getBanco(),
+            ContaId contaId = new ContaId(
+                    transacao.getBanco(),
                     transacao.getAgencia(),
                     transacao.getConta(),
                     transacao.getTitular()
             );
-            map.put(contaId, transacoes);
-//        pegar ou criar lista da conta no mapa
-//        adicionar transacao nessa lista
+                List<Transacao> listaDaConta = map.get(contaId);
+            if (listaDaConta == null) {
+                listaDaConta = new ArrayList<>();
+                map.put(contaId, listaDaConta);
+            }
+            listaDaConta.add(transacao);
         }
         return map;
     }
 
-
-    public void ordenarTransações(){}
-    public void calcularSaldoFinal(){}
-
+    public void ordenarTransacoesPorDataHora(Map<ContaId, List<Transacao>> agrupadas) {
+        if (agrupadas == null) {
+            throw new IllegalArgumentException("O mapa de transações agrupadas não pode ser nulo.");
+        }
+        if (agrupadas.isEmpty()) {
+            return;
+        }
+        for (List<Transacao> listaConta : agrupadas.values()) {
+            listaConta.sort(Comparator.comparing(Transacao::getDataHora));
+        }
+    }
 }
